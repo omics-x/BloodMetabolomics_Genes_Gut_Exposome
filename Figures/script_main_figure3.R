@@ -14,7 +14,6 @@ library("readxl")
 cog<-read.csv("Gfactor_Association_metabolites_age_sex_antilipid_BMI_M1_annotated_95CI.csv",sep='\t')
 sig<-cog$Metabolite[cog$FDR<0.05]
 ####### Load annotation file 
-library("readxl")
 anno_com <- read_excel("DUKE-0304-19ML_annotation_fileRSIII_2.XLSX",sheet = 1)
 anno_com<-as.data.frame(anno_com)
 anno_com$names<-paste0("metab_",anno_com$CHEM_ID)
@@ -51,16 +50,22 @@ merg5<-merge(merg4,como[,c(1,10)],by.x="names",by.y="X")
 final<-merg5[,c(2,5,6,4,7,3)]
 
 final<-final[order(final$EV_Genetics,decreasing = TRUE),]
-library(tidyverse)
+
 
 Df <- final %>% 
   gather(keys, values, EV_Genetics:EV_Medication)
 # To define the order of determinants
 Df$keys_factor = factor(Df$keys, levels=c('EV_Genetics','EV_Lifestyle','EV_Medication','EV_Clinical','EV_Microbiota'))
+# Order of metabolites in the final figure 
+order_metabolites <- c("X - 25420","X - 11849","X - 11847","uridine","o-cresol sulfate","ergothioneine","4-vinylguaiacol sulfate",
+  "4-vinylcatechol sulfate","3-methyl catechol sulfate (2)","3-hydroxy-2-methylpyridine sulfate","3-acetylphenol sulfate",
+  "2-naphthol sulfate","X - 24418","2'-deoxyuridine")
+
+Df$CHEMICAL_NAME <- factor(Df$CHEMICAL_NAME, levels = rev(order_metabolites))
 
 pdf(file="EV_metabolites_associated_with_General_cognition.pdf",width=12,height=5)
 colors <- c("#999999", "#E69F00", "#0072B2", "#D55E00", "#CC79A7")
-Df %>% mutate(CHEMICAL_NAME = fct_reorder(CHEMICAL_NAME, desc(values))) %>%     
+Df %>% mutate(CHEMICAL_NAME = CHEMICAL_NAME, desc(values)) %>%     
   ggplot(aes(CHEMICAL_NAME, values)) +
   geom_col(aes(fill = keys_factor), width = 0.5) +
   scale_fill_manual(values = colors) +
@@ -114,9 +119,38 @@ Df <- final %>%
   gather(keys, values, EV_Genetics:EV_Medication)
 # To define the order of determinants
 Df$keys_factor = factor(Df$keys, levels=c('EV_Genetics','EV_Lifestyle','EV_Medication','EV_Clinical','EV_Microbiota'))
+
+Df$CHEMICAL_NAME[Df$CHEMICAL_NAME == "1-carboxyethyltyrosine"] <- "N-lactoyl tyrosine"
+
+order_metabolites_mri <- c(
+  "X - 26107",
+  "X - 11787",
+  "theophylline",
+  "sphingomyelin (d18:1/20:1, d18:2/20:0)*",
+  "S-adenosylhomocysteine (SAH)",
+  "paraxanthine",
+  "cyclo(leu-pro)",
+  "argininate*",
+  "6-bromotryptophan",
+  "3-hydroxyoleoylcarnitine",
+  "3-hydroxyhexanoylcarnitine (1)",
+  "1,3,7-trimethylurate",
+  "1,3-dimethylurate",
+  "(S)-3-hydroxybutyrylcarnitine",
+  "glutamine conjugate of C6H10O2 (1)*",
+  "caffeine",
+  "glycerophosphorylcholine (GPC)",
+  "glutamine conjugate of C6H10O2 (2)*",
+  "sphingomyelin (d18:2/18:1)*",
+  "3-hydroxysebacate",
+  "sphingomyelin (d18:2/24:2)*",
+  "N-lactoyl tyrosine"
+)
+Df$CHEMICAL_NAME <- factor(Df$CHEMICAL_NAME, levels = rev(order_metabolites_mri))
+
 pdf(file="EV_metabolites_associated_with_MRI.pdf",width=12,height=5)
 colors <- c("#999999", "#E69F00", "#0072B2", "#D55E00", "#CC79A7")
-Df %>% mutate(CHEMICAL_NAME = fct_reorder(CHEMICAL_NAME, desc(values))) %>%     
+Df %>% mutate(CHEMICAL_NAME = CHEMICAL_NAME, desc(values)) %>%     
   ggplot(aes(CHEMICAL_NAME, values)) +
   geom_col(aes(fill = keys_factor), width = 0.5) +
   scale_fill_manual(values = colors) +
