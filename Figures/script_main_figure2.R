@@ -4,9 +4,9 @@
 ## Load R library 
 .libPaths("/home/sahmad/R/x86_64-pc-linux-gnu-library/4.1")
 library("readxl")
-library(ggplot2)
-library(jcolors)
-library(gridExtra)
+library("ggplot2")
+library("jcolors")
+library("gridExtra")
 ## Load AD association results of RSI-IV
 ad<-read.csv("AD_association_metabolites_age_sex_antilipid_BMI_model1_excStroke.csv",sep='\t')
 ## Load general cognition association results of RSIII-2
