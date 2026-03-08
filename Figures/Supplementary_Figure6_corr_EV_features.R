@@ -3,7 +3,8 @@
 ####################################################################################
 .libPaths("/home/sahmad/R/x86_64-pc-linux-gnu-library/4.1")
 ### install.packages("GGally")
-library("GGally")
+library(GGally)
+library(ggplot2)
 
 ### Load EV results from various feature sets; the demo file contains lifestyle factors, and the como file contains clinical factors
 mic<-read.csv("EV_microbiota_results.csv")
@@ -33,8 +34,60 @@ merg2<-merge(merg1,gene[,c(1,10)],by.x="X",by.y="X")
 merg3<-merge(merg2,mic[,c(1,10)],by.x="X",by.y="X")
 merg4<-merge(merg3,como[,c(1,10)],by.x="X",by.y="X")
 
-## Plot the save the PDF
-pdf("Supplementary_Figure6_CorrelationEV_Features.pdf")
-ggpairs(merg4, columns = 2:6)
-dev.off()
+colnames(merg4) <- c(
+  "Feature",
+  "EV Medication",
+  "EV Lifestyle",
+  "EV Genetics",
+  "EV Microbiota",
+  "EV Clinical"
+)
 
+
+## Plot the save the PDF
+# pdf("Supplementary_Figure6_CorrelationEV_Features.pdf")
+# ggpairs(merg4, columns = 2:6)
+# dev.off()
+
+pdf("Supplementary_Figure6_CorrelationEV_Features.pdf", width = 8, height = 8)
+
+ggpairs(
+  merg4,
+  columns = 2:6,
+  lower = list(
+    continuous = wrap(
+      "points",
+      alpha = 0.55,
+      size = 1.6,
+      color = "#2C7FB8"
+    )
+  ),
+  upper = list(
+    continuous = wrap(
+      "cor",
+      size = 5,
+      color = "#1B1B1B"
+    )
+  ),
+  diag = list(
+    continuous = wrap(
+      "densityDiag",
+      fill = "#1B9E77",
+      alpha = 0.65,
+      color = "white",
+      size = 0.3
+    )
+  )
+) +
+  theme_bw(base_size = 13) +
+  theme(
+    panel.grid.major = element_line(color = "grey90", size = 0.3),
+    panel.grid.minor = element_blank(),
+    strip.background = element_rect(fill = "grey95", color = NA),
+    strip.text = element_text(size = 11, face = "bold"),
+    axis.text = element_text(size = 10),
+    axis.title = element_text(size = 11),
+    panel.spacing = unit(0.8, "lines")
+  )
+
+dev.off()

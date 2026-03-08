@@ -65,13 +65,13 @@ wml_set$color<-NA
 wml_set$color[wml_set$Metabolite%in%metabolites_wml]<-"red"
 wml_set$color[!wml_set$Metabolite%in%metabolites_wml]<-"black"
 
-### preserve the order of metabolites in the final pdf, as we changed the name of metabolite 1-carboxyethytyrosin ==> N-lactoyl tyrosine
+### preserve the order of metabolites in the final pdf, as we changed the name of metabolite 1-carboxyethytyrosin ==> N-lactoyltyrosine
 order_metabolites <- c("X - 26107","X - 25420","X - 24418","X - 11849","X - 11847","X - 11787","uridine","theophylline","sphingomyelin (d18:2/24:2)","sphingomyelin (d18:2/18:1)",
                        "sphingomyelin (d18:1/20:1, d18:2/20:0)","S-adenosylhomocysteine (SAH)","paraxanthine","o-cresol sulfate","glycerophosphorylcholine (GPC)",
                        "glutamine conjugate of C6H10O2 (2)","glutamine conjugate of C6H10O2 (1)","ergothioneine","cyclo(leu-pro)","caffeine","argininate","6-bromotryptophan",
-                       "4-vinylguaiacol sulfate","4-vinylcatechol sulfate","3-methyl catechol sulfate (2)","3-hydroxysebacate","3-hydroxyoleoylcarnitine","3-hydroxyhexanoylcarnitine (1)",
+                       "4-vinylguaiacol sulfate","4-vinylcatechol sulfate","3-methylcatechol sulfate","3-hydroxysebacate","3-hydroxyoleoylcarnitine","3-hydroxyhexanoylcarnitine (1)",
                        "3-hydroxy-2-methylpyridine sulfate","3-acetylphenol sulfate","2'-deoxyuridine","2-naphthol sulfate","1,3,7-trimethylurate","1,3-dimethylurate",
-                       "N-lactoyl tyrosine","(S)-3-hydroxybutyrylcarnitine")
+                       "N-lactoyltyrosine","(S)-3-hydroxybutyrylcarnitine")
 cog_set$CHEMICAL_NAME <- factor(cog_set$CHEMICAL_NAME_new, levels = rev(order_metabolites))
 tbv_set$CHEMICAL_NAME <- factor(tbv_set$CHEMICAL_NAME_new, levels = rev(order_metabolites))
 hcv_set$CHEMICAL_NAME <- factor(hcv_set$CHEMICAL_NAME_new, levels = rev(order_metabolites))
@@ -81,10 +81,10 @@ wml_set$CHEMICAL_NAME <- factor(wml_set$CHEMICAL_NAME_new, levels = rev(order_me
 # Write the source data file 
 write_xlsx(
   list(
-    Figure1A_cognition = cog_set,
-    Figure1B_TBV = tbv_set,
-    Figure1C_HCV = hcv_set,
-    Figure1D_WML = wml_set
+    Figure1a_cognition = cog_set,
+    Figure1b_TBV = tbv_set,
+    Figure1c_HCV = hcv_set,
+    Figure1d_WML = wml_set
   ),
   "/Users/sahmad1/Downloads/SOURCE_FILES/source_data_main_figures/Source_data_Figure1.xlsx"
 )
@@ -106,11 +106,15 @@ metabolites_cog<-cog$Metabolite[which(cog$p<0.05)]
 cog_set<-cog[cog$Metabolite%in%metabolites_cog,]
 ad_set<-ad[ad$metab_name%in%metabolites_cog,]
 ## combine both cognition and AD Beta matrix
-cog_ad<-merge(cog_set[,c("Beta","CHEMICAL_NAME","SUPER_PATHWAY","FDR")],ad_set[,c("Beta","CHEMICAL_NAME","FDR")],by='CHEMICAL_NAME')
+cog_ad<-merge(cog_set[,c("Beta","Metabolite","CHEMICAL_NAME","SUPER_PATHWAY","FDR")],ad_set[,c("Beta","CHEMICAL_NAME","FDR")],by='CHEMICAL_NAME')
 cog_ad$SUPER_PATHWAY[is.na(cog_ad$SUPER_PATHWAY)]<-"Unknowns"
-colnames(cog_ad)<-c("CHEMICAL_NAME","Beta_cognition","SUPER_PATHWAY","FDR_cognition","Beta_incAD","FDR_incAD")
+colnames(cog_ad)<-c("CHEMICAL_NAME","Beta_cognition","Metabolite","SUPER_PATHWAY","FDR_cognition","Beta_incAD","FDR_incAD")
+# consistent correct naming 3-methyl catechol sulfate (2) to 3-methylcatechol sulfate
+cog_ad$CHEMICAL_NAME[cog_ad$CHEMICAL_NAME=='3-methyl catechol sulfate (2)']<-'3-methylcatechol sulfate'
+# retain names of only top metabolites 
 cog_ad$significant_metabolites<-NA
 cog_ad$significant_metabolites<-ifelse(cog_ad$FDR_cognition<0.05 | cog_ad$FDR_incAD<0.05,cog_ad$CHEMICAL_NAME,"")
+cog_ad<-cog_ad %>% select(Metabolite,CHEMICAL_NAME,SUPER_PATHWAY,Beta_cognition,FDR_cognition,Beta_incAD,FDR_incAD,significant_metabolites)
 write_xlsx(
   list(
     Figure2 = cog_ad
@@ -159,7 +163,9 @@ merg3<-merge(merg2,gene[,c(1,10)],by.x="names",by.y="X")
 merg4<-merge(merg3,mic[,c(1,10)],by.x="names",by.y="X")
 merg5<-merge(merg4,como[,c(1,10)],by.x="names",by.y="X")
 
-final<-merg5[,c(2,5,6,4,7,3)]
+final<-merg5[,c(1, 2,5,6,4,7,3)]
+# consistent correct naming 3-methyl catechol sulfate (2) to 3-methylcatechol sulfate
+final$CHEMICAL_NAME[final$CHEMICAL_NAME=='3-methyl catechol sulfate (2)']<-'3-methylcatechol sulfate'
 
 Figure3A<-final[order(final$EV_Genetics,decreasing = TRUE),]
 
@@ -200,14 +206,14 @@ merg3<-merge(merg2,gene[,c(1,10)],by.x="names",by.y="X")
 merg4<-merge(merg3,mic[,c(1,10)],by.x="names",by.y="X")
 merg5<-merge(merg4,como[,c(1,10)],by.x="names",by.y="X")
 
-final<-merg5[,c(2,5,6,4,7,3)]
-final$CHEMICAL_NAME[final$CHEMICAL_NAME == "1-carboxyethyltyrosine"] <- "N-lactoyl tyrosine"
+final<-merg5[,c(1, 2,5,6,4,7,3)]
+final$CHEMICAL_NAME[final$CHEMICAL_NAME == "1-carboxyethyltyrosine"] <- "N-lactoyltyrosine"
 Figure3B<-final[order(final$EV_Genetics,decreasing = TRUE),]
 
 write_xlsx(
   list(
-    Figure3A = Figure3A,
-    Figure3B = Figure3B
+    Figure3a = Figure3A,
+    Figure3b = Figure3B
   ),
   "/Users/sahmad1/Downloads/SOURCE_FILES/source_data_main_figures/Source_data_Figure3.xlsx"
 )
@@ -298,8 +304,8 @@ colnames(all_sig)[colnames(all_sig) == "X"] <- "Metabolites"
 
 write_xlsx(
   list(
-    Figure4A = combined,
-    Figure4B = all_sig
+    Figure4a = combined,
+    Figure4b = all_sig
   ),
   "/Users/sahmad1/Downloads/SOURCE_FILES/source_data_main_figures/Source_data_Figure4.xlsx"
 )
