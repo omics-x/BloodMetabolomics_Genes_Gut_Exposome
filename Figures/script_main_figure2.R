@@ -8,9 +8,9 @@ library("ggplot2")
 library("jcolors")
 library("gridExtra")
 ## Load AD association results of RSI-IV
-ad<-read.csv("AD_association_metabolites_age_sex_antilipid_BMI_model1_excStroke.csv",sep='\t')
+ad<-read.csv("/Users/sahmad1/Downloads/SOURCE_FILES/inputfilessourcedata/AD_Association_metabolites_Model1_excStroke_RS1_IV.csv",sep='\t')
 ## Load general cognition association results of RSIII-2
-cog<-read.csv("Gfactor_Association_metabolites_age_sex_antilipid_BMI_M1_annotated_95CI.csv",sep='\t')
+cog<-read.csv("/Users/sahmad1/Downloads/SOURCE_FILES/inputfilessourcedata/Association_regression_Cognition_M1_RSIII_2.csv",sep='\t')
 ## General cognition associated metabolites with p<0.05
 metabolites_cog<-cog$Metabolite[which(cog$p<0.05)]
 ## Extract only rows with metabolites p<0.05 for association with cognition

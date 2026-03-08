@@ -10,9 +10,9 @@ library(dplyr)
 
 ## Load Result files 
 ## Load results of Association of metabolites with MRI markers (M1)
-mri<-read.csv("/Users/sahmad1/Downloads/SOURCE_FILES/Association_Metabolon_fullmodel_excludingStroke_AD_RS1_5_m1.csv",sep='\t')
+mri<-read.csv("/Users/sahmad1/Downloads/SOURCE_FILES/inputfilessourcedata/Association_regression_MRI_M1_RSIII_2.csv",sep='\t')
 ## Load results of Association of metabolites with general cognition (M1)
-cog<-read.csv("/Users/sahmad1/Downloads/SOURCE_FILES/Gfactor_Association_metabolites_age_sex_antilipid_BMI_M1_annotated_95CI.csv",sep='\t')
+cog<-read.csv("/Users/sahmad1/Downloads/SOURCE_FILES/inputfilessourcedata/Association_regression_Cognition_M1_RSIII_2.csv",sep='\t')
 
 ## Unique metabolites with FDR < 0.05
 metabolites_cog<-cog$Metabolite[which(cog$FDR<0.05)]
@@ -26,7 +26,7 @@ hcv<-mri[mri$endo_pheno=="total_Hippocampus",]
 wml<-mri[mri$endo_pheno=="Total_wml",]
 
 ### Load annotation file for metabolomics data RSIII-2
-anno_com <- read_excel("/Users/sahmad1/Downloads/SOURCE_FILES/DUKE-0304-19ML_annotation_fileRSIII_2.XLSX",sheet = 1)
+anno_com <- read_excel("/Users/sahmad1/Downloads/SOURCE_FILES/inputfilessourcedata/DUKE-0304-19ML_annotation_fileRSIII_2.XLSX",sheet = 1)
 anno_com<-as.data.frame(anno_com)
 anno_com$Name<-paste0("metab_",anno_com$CHEM_ID)
 
@@ -67,9 +67,9 @@ wml_set$color[!wml_set$Metabolite%in%metabolites_wml]<-"black"
 order_metabolites <- c("X - 26107","X - 25420","X - 24418","X - 11849","X - 11847","X - 11787","uridine","theophylline","sphingomyelin (d18:2/24:2)","sphingomyelin (d18:2/18:1)",
                        "sphingomyelin (d18:1/20:1, d18:2/20:0)","S-adenosylhomocysteine (SAH)","paraxanthine","o-cresol sulfate","glycerophosphorylcholine (GPC)",
                        "glutamine conjugate of C6H10O2 (2)","glutamine conjugate of C6H10O2 (1)","ergothioneine","cyclo(leu-pro)","caffeine","argininate","6-bromotryptophan",
-                       "4-vinylguaiacol sulfate","4-vinylcatechol sulfate","3-methyl catechol sulfate (2)","3-hydroxysebacate","3-hydroxyoleoylcarnitine","3-hydroxyhexanoylcarnitine (1)",
+                       "4-vinylguaiacol sulfate","4-vinylcatechol sulfate","3-methylcatechol sulfate","3-hydroxysebacate","3-hydroxyoleoylcarnitine","3-hydroxyhexanoylcarnitine (1)",
                        "3-hydroxy-2-methylpyridine sulfate","3-acetylphenol sulfate","2'-deoxyuridine","2-naphthol sulfate","1,3,7-trimethylurate","1,3-dimethylurate",
-                       "N-lactoyl tyrosine","(S)-3-hydroxybutyrylcarnitine")
+                       "N-lactoyltyrosine","(S)-3-hydroxybutyrylcarnitine")
 cog_set$CHEMICAL_NAME <- factor(cog_set$CHEMICAL_NAME_new, levels = rev(order_metabolites))
 tbv_set$CHEMICAL_NAME <- factor(tbv_set$CHEMICAL_NAME_new, levels = rev(order_metabolites))
 hcv_set$CHEMICAL_NAME <- factor(hcv_set$CHEMICAL_NAME_new, levels = rev(order_metabolites))

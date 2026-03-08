@@ -1,12 +1,12 @@
 #################################################### 
-## Code for Supplementary Figure 4: Concordance of metabolite signatures between cognition and MRI phenotypes
+## Code for Extended Figure 2: Concordance of metabolite signatures between cognition and MRI phenotypes
 #################################################### 
 .libPaths("/home/sahmad/R/x86_64-pc-linux-gnu-library/4.1")
 library(UpSetR)
 library("readxl")
 
 #################################################### 
-## Supplementary Figure 4A: UpSet plot
+## Extended Figure 2a: UpSet plot
 #################################################### 
 ## Load results from association analyses of general cognition and MRI measures
 mri<-read.csv("Association_Metabolon_fullmodel_excludingStroke_AD_RS1_5_m1.csv",sep='\t')
@@ -39,12 +39,12 @@ all_sig<- list(
 )
 
 ### Plot the UpSet plot
-pdf("UpSet_plot_overlap_associations_MRI_cognition.pdf")
+pdf("UpSet_overlap_associations_MRI_cognition_ExtFig2a.pdf")
 upset(fromList(all_sig),order.by="freq")
 dev.off()
 
 #################################################### 
-## Supplementary Figure 4B-D: Scatter plots for overlaping metabolites between cognition and MRI
+## Extended Figure 2b-d: Scatter plots for overlaping metabolites between cognition and MRI
 #################################################### 
 .libPaths("/home/sahmad/R/x86_64-pc-linux-gnu-library/4.1")
 library(ggplot2)
@@ -100,7 +100,7 @@ cog_wml$name<-NA
 cog_wml$name<-ifelse(cog_wml$FDR.x<0.05 | cog_wml$FDR.y<0.05,cog_wml$CHEMICAL_NAME,"")
 
 ### Plot scatter plots for the overlap between cognition and the three MRI phenotypes and save as a PDF
-pdf(file="Correlation_plot_cognition_TBV_Sup.Fig4B.pdf",width=10,height=8)
+pdf(file="Correlation_plot_cognition_TBV_Sup.ExtFig2b.pdf",width=10,height=8)
 # Calculate correlation
 correlation <- cor(cog_tbv$Beta.x, cog_tbv$Beta.y)
 # Calculate p-value using cor.test()
@@ -122,7 +122,7 @@ ggplot(cog_tbv, aes(x = Beta.x, y = Beta.y, color = factor(SUPER_PATHWAY))) +
            label = paste(cor_str, p_value_str, sep = ", "), hjust = 0, vjust = 1)
 dev.off()
 
-pdf(file="Correlation_plot_cognition_HCV_Sup.Fig4C.pdf",width=10,height=8)                                                                                                 
+pdf(file="Correlation_plot_cognition_HCV_ExtFig2c.pdf",width=10,height=8)                                                                                                 
 # Calculate correlation
 correlation <- cor(cog_hcv$Beta.x, cog_hcv$Beta.y)
 # Calculate p-value using cor.test()
@@ -145,7 +145,7 @@ ggplot(cog_hcv, aes(x = Beta.x, y = Beta.y, color = factor(SUPER_PATHWAY))) +
 
 dev.off()
 
-pdf(file="Correlation_plot_cognition_WML_Sup.Fig4D.pdf",width=10,height=8)                                                                                               
+pdf(file="Correlation_plot_cognition_WML_ExtFig2d.pdf",width=10,height=8)                                                                                               
 # Calculate correlation
 correlation <- cor(cog_wml$Beta.x, cog_wml$Beta.y)
 # Calculate p-value using cor.test()

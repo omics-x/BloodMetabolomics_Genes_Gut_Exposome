@@ -9,11 +9,11 @@ library(UpSetR)
 #################################################### 
 ## Main Figure 4A: Beeswarm plot to compare EV between different determinants
 #################################################### 
-mic<-read.csv("EV_microbiota_results.csv")
-med<-read.csv("EV_medication_results.csv")
-demo<-read.csv("EV_lifestyle_results.csv")
-como<-read.csv("EV_comborbidity_results.csv")
-gene<-read.csv("EV_gene_results.csv")
+mic<-read.csv("/Users/sahmad1/Downloads/SOURCE_FILES/inputfilessourcedata/EV_microbiota_results.csv")
+med<-read.csv("/Users/sahmad1/Downloads/SOURCE_FILES/inputfilessourcedata/EV_medication_results.csv")
+demo<-read.csv("//Users/sahmad1/Downloads/SOURCE_FILES/inputfilessourcedata/EV_lifestyle_results.csv")
+como<-read.csv("/Users/sahmad1/Downloads/SOURCE_FILES/inputfilessourcedata/EV_comborbidity_results.csv")
+gene<-read.csv("/Users/sahmad1/Downloads/SOURCE_FILES/inputfilessourcedata/EV_gene_results.csv")
 
 mic$fdr<-p.adjust(mic$spearman_p,method='fdr')
 med$fdr<-p.adjust(med$spearman_p,method='fdr')
@@ -38,8 +38,8 @@ combined<-rbind(mic_sig[,c("Features","explained_variance_score","X")],med_sig[,
 combined$Percent_variance_explained<-combined$explained_variance_score*100
 
 ## Load general cognition and MRI association results to tag significant metabolites in the Beeswarm plot
-mri<-read.csv("Association_Metabolon_fullmodel_excludingStroke_AD_RS1_5_m1.csv",sep='\t')
-cog<-read.csv("Gfactor_Association_metabolites_age_sex_antilipid_BMI_M1_annotated_95CI.csv",sep='\t')
+mri<-read.csv("/Users/sahmad1/Downloads/SOURCE_FILES/inputfilessourcedata/Association_regression_MRI_M1_RSIII_2.csv",sep='\t')
+cog<-read.csv("/Users/sahmad1/Downloads/SOURCE_FILES/inputfilessourcedata/Association_regression_Cognition_M1_RSIII_2.csv",sep='\t')
 
 ## Unique metabolites 
 metabolites_cog<-cog$Metabolite[which(cog$FDR<0.05)]
@@ -61,11 +61,11 @@ dev.off()
 #################################################### 
 ## Main Figure 4B: UpSet plot to show the number of metabolites explained by different determinants
 #################################################### 
-mic<-read.csv("EV_microbiota_results.csv")
-med<-read.csv("EV_medication_results.csv")
-demo<-read.csv("EV_lifestyle_results.csv")
-como<-read.csv("EV_comborbidity_results.csv")
-gene<-read.csv("EV_gene_results.csv")
+mic<-read.csv("/Users/sahmad1/Downloads/SOURCE_FILES/inputfilessourcedata/EV_microbiota_results.csv")
+med<-read.csv("/Users/sahmad1/Downloads/SOURCE_FILES/inputfilessourcedata/EV_medication_results.csv")
+demo<-read.csv("/Users/sahmad1/Downloads/SOURCE_FILES/inputfilessourcedata/EV_lifestyle_results.csv")
+como<-read.csv("/Users/sahmad1/Downloads/SOURCE_FILES/inputfilessourcedata/EV_comborbidity_results.csv")
+gene<-read.csv("/Users/sahmad1/Downloads/SOURCE_FILES/inputfilessourcedata/EV_gene_results.csv")
 
 
 mic$fdr<-p.adjust(mic$spearman_p,method='fdr')

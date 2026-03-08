@@ -1,18 +1,18 @@
 ######################################################################### 
-### Supplementary Figure 8A: Heatmap of MRI associated metabolites with medication use 
+### Extended Figure 5a: Heatmap of MRI associated metabolites with medication use 
 #########################################################################
 library(gplots)
 
-mri<-read.csv("Association_Metabolon_fullmodel_excludingStroke_AD_RS1_5_m1.csv",head=T,sep='\t')
+mri<-read.csv("/Users/sahmad1/Downloads/SOURCE_FILES/inputfilessourcedata/Association_regression_MRI_M1_RSIII_2.csv",head=T,sep='\t')
 metabolites<-mri$Metabolite[which(mri$FDR<0.05)]
 ### Load association results of medication use with metabolomics 
-res_anno<-read.csv("Association_analysis_medication.csv",head=T)
+res_anno<-read.csv("/Users/sahmad1/Downloads/SOURCE_FILES/inputfilessourcedata/Association_regression_medication_RSIII_2.csv",head=T)
 res_anno$zvalue<-(res_anno$Beta/res_anno$Se)
 res_anno$medication_names<-str_trim(res_anno$name)
 ## P-value and regression coefficient matrix 
 res_anno<-res_anno[which(res_anno$Metabolite%in%metabolites),]
 ## Correct the name of metabolite
-res_anno$CHEMICAL_NAME[res_anno$CHEMICAL_NAME == "1-carboxyethyltyrosine"] <- "N-lactoyl tyrosine"
+res_anno$CHEMICAL_NAME[res_anno$CHEMICAL_NAME == "1-carboxyethyltyrosine"] <- "N-lactoyltyrosine"
 ## P-value and Beta matrix 
 pvalue<-res_anno[,c("CHEMICAL_NAME","medication_names","FDR")]
 effect<-res_anno[,c("CHEMICAL_NAME","medication_names","zvalue")]
@@ -39,7 +39,7 @@ pcors[pcors>=1.3] = "*"
 pcors[pcors>=0] = " "
 pcors[is.na(pcors)] = "NA"
 pcors<-pcors[ match(rownames(cors), rownames(pcors)), match(colnames(cors), colnames(pcors))]
-pdf("Heatmaps_metabolite_MRI_overlap_medication.pdf", height=8, width=6)
+pdf("Heatmaps_metabolite_MRI_overlap_medication_ExtFigure5a.pdf", height=8, width=6)
 heatmap.2(
   cors,
   Rowv = TRUE,
@@ -66,20 +66,20 @@ heatmap.2(
 dev.off()
 
 ######################################################################### 
-### Supplementary Figure 8B: Heatmap of MRI associated metabolites with lifestyle factors  
+### Extended Figure 5b: Heatmap of MRI associated metabolites with lifestyle factors  
 #########################################################################
 library(stringr)
 library(gplots)
 
-mri<-read.csv("Association_Metabolon_fullmodel_excludingStroke_AD_RS1_5_m1.csv",head=T,sep='\t')
+mri<-read.csv("/Users/sahmad1/Downloads/SOURCE_FILES/inputfilessourcedata/Association_regression_MRI_M1_RSIII_2.csv",head=T,sep='\t')
 metabolites<-mri$Metabolite[which(mri$FDR<0.05)]
 ### Load results
-res_anno<-read.csv("Association_analysis_demographics.csv",head=T)
+res_anno<-read.csv("/Users/sahmad1/Downloads/SOURCE_FILES/inputfilessourcedata/Association_regression_demographics_RSIII_2.csv",head=T)
 res_anno$zvalue<-(res_anno$Beta/res_anno$Se)
 ### Prepare files 
 res_anno<-res_anno[which(res_anno$Metabolite%in%metabolites),]
 ## Correct the name of metabolite
-res_anno$CHEMICAL_NAME[res_anno$CHEMICAL_NAME == "1-carboxyethyltyrosine"] <- "N-lactoyl tyrosine"
+res_anno$CHEMICAL_NAME[res_anno$CHEMICAL_NAME == "1-carboxyethyltyrosine"] <- "N-lactoyltyrosine"
 ## P-value and Beta matrix 
 pvalue<-res_anno[,c("CHEMICAL_NAME","Demographics","FDR")]
 effect<-res_anno[,c("CHEMICAL_NAME","Demographics","zvalue")]
@@ -104,7 +104,7 @@ pcors[pcors>=1.3] = "*"
 pcors[pcors>=0] = " "
 pcors[is.na(pcors)] = "NA"
 pcors<-pcors[ match(rownames(cors), rownames(pcors)), match(colnames(cors), colnames(pcors))]
-pdf("Heatmaps_metabolite_MRI_overlap_lifestyle_factors.pdf", height=8, width=6)
+pdf("Heatmaps_metabolite_MRI_overlap_lifestyle_factors_ExtFigure5b.pdf", height=8, width=6)
 heatmap.2(
   cors,
   Rowv = TRUE,
@@ -130,20 +130,20 @@ heatmap.2(
 dev.off()
 
 ######################################################################### 
-### Supplementary Figure 8C: Heatmap of MRI associated metabolites with clinical factors  
+### Extended Figure5c: Heatmap of MRI associated metabolites with clinical factors  
 #########################################################################
 library(stringr)
 library(gplots)
 
-mri<-read.csv("Association_Metabolon_fullmodel_excludingStroke_AD_RS1_5_m1.csv",head=T,sep='\t')
+mri<-read.csv("/Users/sahmad1/Downloads/SOURCE_FILES/inputfilessourcedata/Association_regression_MRI_M1_RSIII_2.csv",head=T,sep='\t')
 metabolites<-mri$Metabolite[which(mri$FDR<0.05)]
 ### Load results
-res_anno<-read.csv("Association_analysis_clinical.csv",head=T)
+res_anno<-read.csv("/Users/sahmad1/Downloads/SOURCE_FILES/inputfilessourcedata/Association_regression_clinical_factors_RSIII_2.csv",head=T)
 res_anno$zvalue<-(res_anno$Beta/res_anno$Se)
 ### Prepare heatmap files 
 res_anno<-res_anno[which(res_anno$Metabolite%in%metabolites),]
 ## Correct the name of metabolite
-res_anno$CHEMICAL_NAME[res_anno$CHEMICAL_NAME == "1-carboxyethyltyrosine"] <- "N-lactoyl tyrosine"
+res_anno$CHEMICAL_NAME[res_anno$CHEMICAL_NAME == "1-carboxyethyltyrosine"] <- "N-lactoyltyrosine"
 
 pvalue<-res_anno[,c("CHEMICAL_NAME","Demographics","FDR")]
 effect<-res_anno[,c("CHEMICAL_NAME","Demographics","zvalue")]
@@ -169,7 +169,7 @@ pcors[pcors>=0] = " "
 pcors[is.na(pcors)] = "NA"
 pcors<-pcors[ match(rownames(cors), rownames(pcors)), match(colnames(cors), colnames(pcors))]
 
-pdf("Heatmaps_metabolite_MRI_overlap_clinical_factors.pdf", height=8, width=6)
+pdf("Heatmaps_metabolite_MRI_overlap_clinical_factors_ExtFigure5c.pdf", height=8, width=6)
 heatmap.2(
   cors,
   Rowv = TRUE,

@@ -1,5 +1,5 @@
 ################################################################################
-### Supplementary Figure 5: Relationship of metabolites strongly influenced by the gut microbiome (EV ≥ 5%) with metabolites nominally associated (P < 0.05) with general cognition 
+### Extended Figure 3: Relationship of metabolites strongly influenced by the gut microbiome (EV ≥ 5%) with metabolites nominally associated (P < 0.05) with general cognition 
 ################################################################################
 .libPaths("/home/sahmad/R/x86_64-pc-linux-gnu-library/4.1")
 
@@ -9,19 +9,19 @@ library(gridExtra)
 library(forcats)
 
 ### Load the files 
-cog<-read.csv("Gfactor_Association_metabolites_age_sex_antilipid_BMI_M1_annotated_95CI.csv",sep='\t')
-female<-read.csv("Gfactor_age_sex_BMI_lipid_low_female.csv",sep='\t')
-male<-read.csv("Gfactor_age_sex_BMI_lipid_low_male.csv",sep='\t')
+cog<-read.csv("/Users/sahmad1/Downloads/SOURCE_FILES/inputfilessourcedata/Association_regression_Cognition_M1_RSIII_2.csv",sep='\t')
+female<-read.csv("/Users/sahmad1/Downloads/SOURCE_FILES/inputfilessourcedata/Association_regression_Cognition_M1_RSIII_2_Sex_stratified_Female.csv",sep='\t')
+male<-read.csv("/Users/sahmad1/Downloads/SOURCE_FILES/inputfilessourcedata/Association_regression_Cognition_M1_RSIII_2_Sex_stratified_male.csv",sep='\t')
 ### Load annotation file 
 library("readxl")
-anno_com <- read_excel("DUKE-0304-19ML_annotation_fileRSIII_2.XLSX",sheet = 1)
+anno_com <- read_excel("/Users/sahmad1/Downloads/SOURCE_FILES/inputfilessourcedata/DUKE-0304-19ML_annotation_fileRSIII_2.XLSX",sheet = 1)
 anno_com<-as.data.frame(anno_com)
 anno_com$Name<-paste0("metab_",anno_com$CHEM_ID)
 
 male_anno<-merge(male,anno_com[,c("Name","CHEMICAL_NAME")],by.x="Metabolite",by.y="Name",all.x=T)
 female_anno<-merge(female,anno_com[,c("Name","CHEMICAL_NAME")],by.x="Metabolite",by.y="Name",all.x=T)
 ### Load the files 
-mic<-read.csv("EV_microbiota_results.csv")
+mic<-read.csv("/Users/sahmad1/Downloads/SOURCE_FILES/inputfilessourcedata/EV_microbiota_results.csv")
 mic$fdr<-p.adjust(mic$spearman_p,method='fdr')
 mic$EV_Microbiota<-ifelse((mic$fdr<0.05 & mic$explained_variance_score>0),mic$explained_variance_score*100,0)
 mic_sub<-mic[mic$EV_Microbiota>=5,]
@@ -36,9 +36,11 @@ merg_male<-merg_male[,c("CHEMICAL_NAME","EV_Microbiota","Beta","p","FDR","lower"
 
 ### Replace corrected names 
 name_map <- c(
-  "1-carboxyethyltyrosine" = "N-lactoyl tyrosine",
-  "1-carboxyethylphenylalanine" = "N-lactoyl phenylalanine",
-  "1-carboxyethylisoleucine" = "N-lactoyl isoleucine"
+  "1-carboxyethyltyrosine" = "N-lactoyltyrosine",
+  "1-carboxyethylphenylalanine" = "N-lactoylphenylalanine",
+  "1-carboxyethylisoleucine" = "N-lactoylisoleucine",
+  "3-methyl catechol sulfate (2)" ="3-methylcatechol sulfate",
+  "3-methyl catechol sulfate (1)" ="3-methylcatechol sulfate (1)"
 )
 
 merg_all$CHEMICAL_NAME[merg_all$CHEMICAL_NAME %in% names(name_map)] <- 
@@ -50,7 +52,7 @@ merg_female$CHEMICAL_NAME[merg_female$CHEMICAL_NAME %in% names(name_map)] <-
 merg_male$CHEMICAL_NAME[merg_male$CHEMICAL_NAME %in% names(name_map)] <- 
   name_map[merg_male$CHEMICAL_NAME[merg_male$CHEMICAL_NAME %in% names(name_map)]]
 
-pdf(file="Supplementary_Figure5_sex_stratified_analysis.pdf",
+pdf(file="Extended_Figure3_sex_stratified_analysis.pdf",
     width=20, height=15)
 
 plot1<-merg_all %>% mutate(CHEMICAL_NAME = fct_reorder(CHEMICAL_NAME, desc(EV_Microbiota))) %>%     

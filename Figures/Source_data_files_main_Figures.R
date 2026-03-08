@@ -12,9 +12,9 @@ library(tidyverse)
 library(dplyr)
 library(writexl)
 ## Load results of Association of metabolites with MRI markers (M1)
-mri<-read.csv("/Users/sahmad1/Downloads/SOURCE_FILES/Association_Metabolon_fullmodel_excludingStroke_AD_RS1_5_m1.csv",sep='\t')
+mri<-read.csv("/Users/sahmad1/Downloads/SOURCE_FILES/inputfilessourcedata/Association_regression_MRI_M1_RSIII_2.csv",sep='\t')
 ## Load results of Association of metabolites with general cognition (M1)
-cog<-read.csv("/Users/sahmad1/Downloads/SOURCE_FILES/Gfactor_Association_metabolites_age_sex_antilipid_BMI_M1_annotated_95CI.csv",sep='\t')
+cog<-read.csv("/Users/sahmad1/Downloads/SOURCE_FILES/inputfilessourcedata/Association_regression_Cognition_M1_RSIII_2.csv",sep='\t')
 
 ## Unique metabolites with FDR < 0.05
 metabolites_cog<-cog$Metabolite[which(cog$FDR<0.05)]
@@ -28,7 +28,7 @@ hcv<-mri[mri$endo_pheno=="total_Hippocampus",]
 wml<-mri[mri$endo_pheno=="Total_wml",]
 
 ### Load annotation file for metabolomics data RSIII-2
-anno_com <- read_excel("/Users/sahmad1/Downloads/SOURCE_FILES/DUKE-0304-19ML_annotation_fileRSIII_2.XLSX",sheet = 1)
+anno_com <- read_excel("/Users/sahmad1/Downloads/SOURCE_FILES/inputfilessourcedata/DUKE-0304-19ML_annotation_fileRSIII_2.XLSX",sheet = 1)
 anno_com<-as.data.frame(anno_com)
 anno_com$Name<-paste0("metab_",anno_com$CHEM_ID)
 
@@ -97,9 +97,9 @@ write_xlsx(
 library("readxl")
 library("dplyr")
 ## Load AD association results of RSI-IV
-ad<-read.csv("AD_association_metabolites_age_sex_antilipid_BMI_model1_excStroke.csv",sep='\t')
+ad<-read.csv("/Users/sahmad1/Downloads/SOURCE_FILES/inputfilessourcedata/AD_Association_metabolites_Model1_excStroke_RS1_IV.csv",sep='\t')
 ## Load general cognition association results of RSIII-2
-cog<-read.csv("Gfactor_Association_metabolites_age_sex_antilipid_BMI_M1_annotated_95CI.csv",sep='\t')
+cog<-read.csv("/Users/sahmad1/Downloads/SOURCE_FILES/inputfilessourcedata/Association_regression_Cognition_M1_RSIII_2.csv",sep='\t')
 ## General cognition associated metabolites with p<0.05
 metabolites_cog<-cog$Metabolite[which(cog$p<0.05)]
 ## Extract only rows with metabolites p<0.05 for association with cognition
@@ -127,21 +127,21 @@ write_xlsx(
 ### Figure 3
 ######################################################
 ### Figure 3A
-cog<-read.csv("Gfactor_Association_metabolites_age_sex_antilipid_BMI_M1_annotated_95CI.csv",sep='\t')
+cog<-read.csv("/Users/sahmad1/Downloads/SOURCE_FILES/inputfilessourcedata/Association_regression_Cognition_M1_RSIII_2.csv",sep='\t')
 sig<-cog$Metabolite[cog$FDR<0.05]
 ####### Load annotation file 
-anno_com <- read_excel("DUKE-0304-19ML_annotation_fileRSIII_2.XLSX",sheet = 1)
+anno_com <- read_excel("/Users/sahmad1/Downloads/SOURCE_FILES/inputfilessourcedata/DUKE-0304-19ML_annotation_fileRSIII_2.XLSX",sheet = 1)
 anno_com<-as.data.frame(anno_com)
 anno_com$names<-paste0("metab_",anno_com$CHEM_ID)
 anno_com<-anno_com[,c("names","CHEMICAL_NAME")]
 ######
 select<-anno_com[anno_com$names%in%sig,]
 ######
-mic<-read.csv("EV_microbiota_results.csv")
-med<-read.csv("EV_medication_results.csv")
-demo<-read.csv("EV_lifestyle_results.csv")
-como<-read.csv("EV_comborbidity_results.csv")
-gene<-read.csv("EV_gene_results.csv")
+mic<-read.csv("/Users/sahmad1/Downloads/SOURCE_FILES/inputfilessourcedata/EV_microbiota_results.csv")
+med<-read.csv("/Users/sahmad1/Downloads/SOURCE_FILES/inputfilessourcedata/EV_medication_results.csv")
+demo<-read.csv("/Users/sahmad1/Downloads/SOURCE_FILES/inputfilessourcedata/EV_lifestyle_results.csv")
+como<-read.csv("/Users/sahmad1/Downloads/SOURCE_FILES/inputfilessourcedata/EV_comborbidity_results.csv")
+gene<-read.csv("/Users/sahmad1/Downloads/SOURCE_FILES/inputfilessourcedata/EV_gene_results.csv")
 
 mic$fdr<-p.adjust(mic$spearman_p,method='fdr')
 med$fdr<-p.adjust(med$spearman_p,method='fdr')
@@ -170,21 +170,21 @@ final$CHEMICAL_NAME[final$CHEMICAL_NAME=='3-methyl catechol sulfate (2)']<-'3-me
 Figure3A<-final[order(final$EV_Genetics,decreasing = TRUE),]
 
 ### Figure 3B
-mri<-read.csv("Association_Metabolon_fullmodel_excludingStroke_AD_RS1_5_m1.csv",sep='\t')
+mri<-read.csv("/Users/sahmad1/Downloads/SOURCE_FILES/inputfilessourcedata/Association_regression_MRI_M1_RSIII_2.csv",sep='\t')
 sig<-mri$Metabolite[mri$FDR<0.05]
 ### Load annotation file 
-anno_com <- read_excel("DUKE-0304-19ML_annotation_fileRSIII_2.XLSX",sheet = 1)
+anno_com <- read_excel("/Users/sahmad1/Downloads/SOURCE_FILES/inputfilessourcedata/DUKE-0304-19ML_annotation_fileRSIII_2.XLSX",sheet = 1)
 anno_com<-as.data.frame(anno_com)
 anno_com$names<-paste0("metab_",anno_com$CHEM_ID)
 anno_com<-anno_com[,c("names","CHEMICAL_NAME")]
 ### Select only significant metabolites 
 select<-anno_com[anno_com$names%in%sig,]
 ### Load the result files of explained variance by gut microbiota, medication, lifestyle, clinical factors and genes 
-mic<-read.csv("EV_microbiota_results.csv")
-med<-read.csv("EV_medication_results.csv")
-demo<-read.csv("EV_lifestyle_results.csv")
-como<-read.csv("EV_comborbidity_results.csv")
-gene<-read.csv("EV_gene_results.csv")
+mic<-read.csv("/Users/sahmad1/Downloads/SOURCE_FILES/inputfilessourcedata/EV_microbiota_results.csv")
+med<-read.csv("/Users/sahmad1/Downloads/SOURCE_FILES/inputfilessourcedata/EV_medication_results.csv")
+demo<-read.csv("/Users/sahmad1/Downloads/SOURCE_FILES/inputfilessourcedata/EV_lifestyle_results.csv")
+como<-read.csv("/Users/sahmad1/Downloads/SOURCE_FILES/inputfilessourcedata/EV_comborbidity_results.csv")
+gene<-read.csv("/Users/sahmad1/Downloads/SOURCE_FILES/inputfilessourcedata/EV_gene_results.csv")
 
 
 mic$fdr<-p.adjust(mic$spearman_p,method='fdr')
@@ -222,11 +222,11 @@ write_xlsx(
 #################################################### 
 ## Figure 4
 #################################################### 
-mic<-read.csv("EV_microbiota_results.csv")
-med<-read.csv("EV_medication_results.csv")
-demo<-read.csv("EV_lifestyle_results.csv")
-como<-read.csv("EV_comborbidity_results.csv")
-gene<-read.csv("EV_gene_results.csv")
+mic<-read.csv("/Users/sahmad1/Downloads/SOURCE_FILES/inputfilessourcedata/EV_microbiota_results.csv")
+med<-read.csv("/Users/sahmad1/Downloads/SOURCE_FILES/inputfilessourcedata/EV_medication_results.csv")
+demo<-read.csv("/Users/sahmad1/Downloads/SOURCE_FILES/inputfilessourcedata/EV_lifestyle_results.csv")
+como<-read.csv("/Users/sahmad1/Downloads/SOURCE_FILES/inputfilessourcedata/EV_comborbidity_results.csv")
+gene<-read.csv("/Users/sahmad1/Downloads/SOURCE_FILES/inputfilessourcedata/EV_gene_results.csv")
 
 mic$fdr<-p.adjust(mic$spearman_p,method='fdr')
 med$fdr<-p.adjust(med$spearman_p,method='fdr')
@@ -251,8 +251,8 @@ combined<-rbind(mic_sig[,c("Features","explained_variance_score","X")],med_sig[,
 combined$Percent_variance_explained<-combined$explained_variance_score*100
 
 ## Load general cognition and MRI association results to tag significant metabolites in the Beeswarm plot
-mri<-read.csv("Association_Metabolon_fullmodel_excludingStroke_AD_RS1_5_m1.csv",sep='\t')
-cog<-read.csv("Gfactor_Association_metabolites_age_sex_antilipid_BMI_M1_annotated_95CI.csv",sep='\t')
+mri<-read.csv("/Users/sahmad1/Downloads/SOURCE_FILES/inputfilessourcedata/Association_regression_MRI_M1_RSIII_2.csv",sep='\t')
+cog<-read.csv("/Users/sahmad1/Downloads/SOURCE_FILES/inputfilessourcedata/Association_regression_Cognition_M1_RSIII_2.csv",sep='\t')
 
 ## Unique metabolites 
 metabolites_cog<-cog$Metabolite[which(cog$FDR<0.05)]
@@ -266,11 +266,11 @@ colnames(combined)[colnames(combined) == "X"] <- "Metabolites"
 #################################################### 
 ## Main Figure 4B: UpSet plot to show the number of metabolites explained by different determinants
 #################################################### 
-mic<-read.csv("EV_microbiota_results.csv")
-med<-read.csv("EV_medication_results.csv")
-demo<-read.csv("EV_lifestyle_results.csv")
-como<-read.csv("EV_comborbidity_results.csv")
-gene<-read.csv("EV_gene_results.csv")
+mic<-read.csv("/Users/sahmad1/Downloads/SOURCE_FILES/inputfilessourcedata/EV_microbiota_results.csv")
+med<-read.csv("/Users/sahmad1/Downloads/SOURCE_FILES/inputfilessourcedata/EV_medication_results.csv")
+demo<-read.csv("/Users/sahmad1/Downloads/SOURCE_FILES/inputfilessourcedata/EV_lifestyle_results.csv")
+como<-read.csv("/Users/sahmad1/Downloads/SOURCE_FILES/inputfilessourcedata/EV_comborbidity_results.csv")
+gene<-read.csv("/Users/sahmad1/Downloads/SOURCE_FILES/inputfilessourcedata/EV_gene_results.csv")
 
 
 mic$fdr<-p.adjust(mic$spearman_p,method='fdr')

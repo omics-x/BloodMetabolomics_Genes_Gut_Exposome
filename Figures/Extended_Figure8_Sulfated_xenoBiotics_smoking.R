@@ -1,4 +1,6 @@
-.libPaths("/home/sahmad/R/x86_64-pc-linux-gnu-library/4.1")
+#################################################
+# Code for Extended Figure 8. The data contains personal information from participants therefore not provided as Extended source data for this figure 
+#################################################
 
 library(foreign)
 library(dplyr)
@@ -6,24 +8,18 @@ library(ggplot2)
 library(gridExtra)
 library(jcolors)
 library(stringr)
+library(cowplot) 
+
 
 #################################################
-# Load cognition data
+# Load cognition data: FAC1_1 is G_factor variable 
 #################################################
-
-cognitionRS3 <- read.spss(
-  "/Users/sahmad1/Documents/RS_projects/association_cognition/e5_RS-I-5 RS-II-3 RS-III-2_cognition_complete 030217_analysis_file.sav",
-  to.data.frame = TRUE
-)
-
+cognitionRS3 <- read.spss("/Users/sahmad1/Documents/RS_projects/association_cognition/e5_RS-I-5 RS-II-3 RS-III-2_cognition_complete 030217_analysis_file.sav",to.data.frame = TRUE)
 cognitionRS3 <- cognitionRS3 %>%
   select(ergoid,
-         FAC1_1, LDST5,
-         STR1T5_adjusted, STR2T5_adjusted, STR3T5_adjusted,
-         WFT5, WLTimm5, WLTdel5, WLTrecog5, PPB_sum5)
-
+         FAC1_1)
 #################################################
-# Load covariates
+# Load covariate files 
 #################################################
 
 covariates <- readRDS(
@@ -75,10 +71,6 @@ data[names(metabolites)] <- scale(data[names(metabolites)],scale = T, center = T
 #################################################
 # Plotting function
 #################################################
-library(ggplot2)
-library(dplyr)
-library(cowplot) 
-library(gridExtra)
 
 new_theme <- theme_cowplot(font_size = 8) + 
   theme(
@@ -127,7 +119,7 @@ make_plots <- function(df, metab_id, metab_name){
 }
 
 #################################################
-# Generate and Save for A4 (8.27 x 11.69 inches)
+# Generate plot and save pdf
 #################################################
 
 plot_list <- list()
@@ -137,8 +129,7 @@ for(i in seq_along(metabolites)){
   plot_list <- c(plot_list, make_plots(data, metab_id, metab_name))
 }
 
-# A4 dimensions in inches: 8.27 x 11.69
-pdf("Metabolomics_smoking_stratified.pdf", width = 8.27, height = 11.69)
+pdf("Metabolomics_smoking_stratified_extFig8.pdf", width = 8.27, height = 11.69)
 
 grid.arrange(
   grobs = plot_list, 

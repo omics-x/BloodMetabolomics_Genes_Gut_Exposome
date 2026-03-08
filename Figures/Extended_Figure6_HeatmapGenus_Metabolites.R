@@ -1,25 +1,27 @@
 #########################################################################
-### Code for Supplementary Figure 9: Relationship of general cognition and brain imaging associated metabolites with gut microbiota
+### Code for Extended Figure 6: Relationship of general cognition and brain imaging associated metabolites with gut microbiota
 #########################################################################
 .libPaths("/home/sahmad/R/x86_64-pc-linux-gnu-library/4.1")
 library("readxl")
 library(gplots)
 
 #########################################################################
-### Supplementary Figure 9A
+### Extended Figure 6a
 #########################################################################
 
-cog<-read.csv("Gfactor_Association_metabolites_age_sex_antilipid_BMI_M1_annotated_95CI.csv",sep='\t')
+cog<-read.csv("/Users/sahmad1/Downloads/SOURCE_FILES/inputfilessourcedata/Association_regression_Cognition_M1_RSIII_2.csv",sep='\t')
 metabolites<-cog$Metabolite[which(cog$FDR<0.05)]
 
 ### Load results of association of gut-microbiome ASVs with metabolomics
-result<-read.table("Association_analysis_ful_model_metabolon_gut_microbiota_Nov1_clr.txt",head=T)
+result<-read.table("/Users/sahmad1/Downloads/SOURCE_FILES/inputfilessourcedata/Association_analysis_metabolites_gut_microbiota_RSIII_2_full_model_Nov1_clr.txt",head=T)
 ### Load Annotation file 
-anno_com <- read_excel("DUKE-0304-19ML_annotation_fileRSIII_2.XLSX",sheet = 1)
+anno_com <- read_excel("/Users/sahmad1/Downloads/SOURCE_FILES/inputfilessourcedata/DUKE-0304-19ML_annotation_fileRSIII_2.XLSX",sheet = 1)
 anno_com<-as.data.frame(anno_com)
 anno_com$Name<-paste0("metab_",anno_com$CHEM_ID)
 res_anno<-merge(result,anno_com[,c("Name","CHEMICAL_NAME","SUPER_PATHWAY","SUB_PATHWAY")],by.x="Pheno",by.y="Name",all.x=T)
 
+res_anno$CHEMICAL_NAME[res_anno$CHEMICAL_NAME == "1-carboxyethyltyrosine"] <- "N-lactoyltyrosine"
+res_anno$CHEMICAL_NAME[res_anno$CHEMICAL_NAME == "3-methyl catechol sulfate (2)"]<- "3-methylcatechol sulfate"
 ### FDR correction 
 res_anno$FDR<-p.adjust(res_anno[,5], method = 'fdr', n = length(res_anno[,4]))
 res_anno$zvalue<-(res_anno$Beta/res_anno$Se)
@@ -52,7 +54,7 @@ pcors[pcors>=0] = " "
 pcors[is.na(pcors)] = "NA"
 pcors<-pcors[ match(rownames(cors), rownames(pcors)), match(colnames(cors), colnames(pcors))]
 
-pdf("Heatmaps_metabolite_cognition_cluster_pathways2.pdf", height=8, width=8)
+pdf("Heatmaps_metabolite_cognition_cluster_pathways2_ExtFig6a.pdf", height=8, width=8)
 heatmap.2(
   cors,
   Rowv = TRUE,
@@ -81,24 +83,25 @@ heatmap.2(
 dev.off()
 
 #########################################################################
-### Supplementary Figure 9B
+### Extended Figure 6b
 #########################################################################
 .libPaths("/home/sahmad/R/x86_64-pc-linux-gnu-library/4.1")
 library("readxl")
 library(gplots)
 
 ### Load results of association of MRI markers with metabolomics
-mri<-read.csv("Association_Metabolon_fullmodel_excludingStroke_AD_RS1_5_m1.csv",sep='\t')
+mri<-read.csv("/Users/sahmad1/Downloads/SOURCE_FILES/inputfilessourcedata/Association_regression_MRI_M1_RSIII_2.csv",sep='\t')
 metabolites<-mri$Metabolite[which(mri$FDR<0.05)]
 
 ### Load results of association of gut-microbiome ASVs with metabolomics
-result<-read.table("Association_analysis_ful_model_metabolon_gut_microbiota_Nov1_clr.txt",head=T)
-anno_com <- read_excel("DUKE-0304-19ML_annotation_fileRSIII_2.XLSX",sheet = 1)
+result<-read.table("/Users/sahmad1/Downloads/SOURCE_FILES/inputfilessourcedata/Association_analysis_metabolites_gut_microbiota_RSIII_2_full_model_Nov1_clr.txt",head=T)
+anno_com <- read_excel("/Users/sahmad1/Downloads/SOURCE_FILES/inputfilessourcedata/DUKE-0304-19ML_annotation_fileRSIII_2.XLSX",sheet = 1)
 anno_com<-as.data.frame(anno_com)
 anno_com$Name<-paste0("metab_",anno_com$CHEM_ID)
 res_anno<-merge(result,anno_com[,c("Name","CHEMICAL_NAME","SUPER_PATHWAY","SUB_PATHWAY")],by.x="Pheno",by.y="Name",all.x=T)
 
-res_anno$CHEMICAL_NAME[res_anno$CHEMICAL_NAME == "1-carboxyethyltyrosine"] <- "N-lactoyl tyrosine"
+res_anno$CHEMICAL_NAME[res_anno$CHEMICAL_NAME == "1-carboxyethyltyrosine"] <- "N-lactoyltyrosine"
+res_anno$CHEMICAL_NAME[res_anno$CHEMICAL_NAME == "3-methyl catechol sulfate (2)"]<- "3-methylcatechol sulfate"
 ### FDR correction 
 res_anno$FDR<-p.adjust(res_anno[,5], method = 'fdr', n = length(res_anno[,4]))
 res_anno$zvalue<-(res_anno$Beta/res_anno$Se)
@@ -131,7 +134,7 @@ pcors[pcors>=0] = " "
 pcors[is.na(pcors)] = "NA"
 pcors<-pcors[ match(rownames(cors), rownames(pcors)), match(colnames(cors), colnames(pcors))]
 
-pdf("Heatmaps_metabolite_MRI_microbiota_association.pdf", height=8, width=8)
+pdf("Heatmaps_metabolite_MRI_microbiota_association_ExtFig6b.pdf", height=8, width=8)
 heatmap.2(
   cors,
   Rowv = TRUE,

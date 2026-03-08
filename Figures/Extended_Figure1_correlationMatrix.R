@@ -1,5 +1,5 @@
 ####################################################################################
-### Supplementary Figure 3: Correlation plot for the metabolites associated with cognition and MRI 
+### Extended Figure 1: Correlation plot for the metabolites associated with cognition and MRI 
 ####################################################################################
 .libPaths("/home/sahmad/R/x86_64-pc-linux-gnu-library/4.1")
 library("corrplot")
@@ -30,7 +30,7 @@ subset<-subset[,sub_set_anno$Name]
 colnames(subset)<-sub_set_anno$CHEMICAL_NAME_new
 ### Plotting and saving the PDF
 cor_matrix<-cor(subset, method = c("spearman"))
-pdf(file="SupplementaryFig3_correlationMatrix.pdf",width=18,height=8)
+pdf(file="Extended_Figure1_correlationMatrix.pdf",width=18,height=8)
 col <- colorRampPalette(c("#BB4444", "#EE9988", "#FFFFFF", "#77AADD", "#4477AA"))
 corrplot(cor_matrix, method="color", col=col(200),  
          type="upper", order="hclust", 
