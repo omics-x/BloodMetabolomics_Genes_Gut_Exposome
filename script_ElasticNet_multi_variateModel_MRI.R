@@ -10,7 +10,7 @@ library(ggplot2)
 library(Metrics)
 
 ### The combined Metabolomics and MRI data in RSIII-2
-MRI_data<-read.table("/Users/sahmad1/Documents/RS_projects/mri_associations/mri_new_covariat_file/RS1_5_Metabolon_MRIdata_2Jun2021.txt",head=T)
+MRI_data<-read.table("RS1_5_Metabolon_MRIdata_2Jun2021.txt",head=T)
 ### Log transform the WML variable
 MRI_data$log_Total_wml<-log(MRI_data$Total_wml)
 ### Remove participants with missing information on WML

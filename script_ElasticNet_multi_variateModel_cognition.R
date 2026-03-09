@@ -9,12 +9,12 @@ library(caret)
 library(ggplot2)
 library(Metrics)
 ### the phenotype file for general cognition. Variable FAC1_1 represents the G-factor (general cognition score)
-cognitionRS3<-read.spss("/Users/sahmad1/Documents/RS_projects/association_cognition/e5_RS-I-5 RS-II-3 RS-III-2_cognition_complete 030217_analysis_file.sav",to.data.frame=T)
+cognitionRS3<-read.spss("e5_RS-I-5 RS-II-3 RS-III-2_cognition_complete 030217_analysis_file.sav",to.data.frame=T)
 cognitionRS3<-cognitionRS3[,c("ergoid","FAC1_1")]
 ### Load a combined Rotterdam Study covariate information file 
-covariates<-readRDS(file ="/Users/sahmad1/Documents/RS_projects/Study_RSI_IV_RSIII_2_covars.rds")
+covariates<-readRDS(file ="Study_RSI_IV_RSIII_2_covars.rds")
 ### Load Metabolomics data file for RSIII-2
-load("/Users/sahmad1/Documents/RS_projects/KNN_imputed_metabolon_data_3rdMarch.RData")
+load("KNN_imputed_metabolon_data_3rdMarch.RData")
 imputeddata<-as.data.frame(imputeddata)
 colnames(imputeddata)<-paste("metab",colnames(imputeddata),sep="_")
 imputeddata$ergoid<-rownames(imputeddata)
