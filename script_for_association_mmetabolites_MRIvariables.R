@@ -49,7 +49,7 @@ results <- rbind(results, tablerow)
 head (results[order(results$p),])
 results$FDR<-p.adjust(results[,5], method = 'fdr', n = length(results[,4]))
 
-write.table(results,file="Association_Metabolon_fullmodel_excludingStroke_AD_RS1_5_m1.csv",sep="\t",row.names=F,col.names=T,quote=F)
+write.table(results,file="Association_regression_MRI_M1_RSIII_2.csv",sep="\t",row.names=F,col.names=T,quote=F)
 ########################################################
 ########################################################
 ### Model 2: adjusted for Age_blood_collection + sex + BMI + Lipilower + Smoke + Diabetes2 + Hypertension + ICV_from_mask
@@ -92,7 +92,7 @@ for (j in 1:length(endo_pheno)) {
 head (results[order(results$p),])
 results$FDR<-p.adjust(results[,5], method = 'fdr', n = length(results[,4]))
 
-write.table(results,file="Association_Metabolon_fullmodel_excludingStroke_AD_RS1_5_m2.csv",sep="\t",row.names=F,col.names=T,quote=F)
+write.table(results,file="Association_regression_MRI_M2_RSIII_2.csv",sep="\t",row.names=F,col.names=T,quote=F)
 
 ########################################################
 ########################################################
@@ -147,7 +147,7 @@ for (j in 1:length(endo_pheno)) {
 head (results[order(results$p),])
 results$FDR<-p.adjust(results[,5], method = 'fdr', n = length(results[,4]))
 
-write.table(results,file="Association_Metabolon_fullmodel_excludingStroke_AD_RS1_5_m1_YearLessthan1.csv",sep="\t",row.names=F,col.names=T,quote=F)
+write.table(results,file="Association_regression_MRI_M1_RSIII_2_YearLessthan1.csv",sep="\t",row.names=F,col.names=T,quote=F)
 
 ########################################################
 ########################################################
@@ -193,15 +193,15 @@ results <- rbind(results, tablerow)
 }
 head (results[order(results$p),])
 results$FDR<-p.adjust(results[,5], method = 'fdr', n = length(results[,4]))
-write.table(results,file="Association_Metabolon_fullmodel_excludingStroke_AD_RS1_5_m1_female.csv",sep="\t",row.names=F,col.names=T,quote=F)
-#write.table(results,file="Association_Metabolon_fullmodel_excludingStroke_AD_RS1_5_m1_male.csv",sep="\t",row.names=F,col.names=T,quote=F)
+write.table(results,file="Association_regression_MRI_M1_RSIII_2_female.csv",sep="\t",row.names=F,col.names=T,quote=F)
+#write.table(results,file="Association_regression_MRI_M1_RSIII_2_male.csv",sep="\t",row.names=F,col.names=T,quote=F)
 
 
 ###############################################################################################
 ## Sex interaction term in the model analysis: Supplementary Table 3 
 ###############################################################################################
-MRI_data<-read.table("/Users/sahmad1/Documents/RS_projects/mri_associations/mri_new_covariat_file/RS1_5_Metabolon_MRIdata_2Jun2021.txt",head=T)
-covariates<-readRDS(file ="/Users/sahmad1/Documents/RS_projects/RS1_replication/cognitionReplication_R01_dec21/data/Study_RSI_IV_RSIII_2_covars.rds")
+MRI_data<-read.table("RS1_5_Metabolon_MRIdata_2Jun2021.txt",head=T)
+covariates<-readRDS(file ="Study_RSI_IV_RSIII_2_covars.rds")
 covariates<-as.data.frame(covariates)
 m<-left_join(MRI_data,covariates,by="ergoid")
 

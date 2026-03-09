@@ -9,8 +9,8 @@ library("readxl")
 ## Extended Figure 2a: UpSet plot
 #################################################### 
 ## Load results from association analyses of general cognition and MRI measures
-mri<-read.csv("Association_Metabolon_fullmodel_excludingStroke_AD_RS1_5_m1.csv",sep='\t')
-cog<-read.csv("Gfactor_Association_metabolites_age_sex_antilipid_BMI_M1_annotated_95CI.csv",sep='\t')
+mri<-read.csv("/Users/sahmad1/Downloads/SOURCE_FILES/inputfilessourcedata/Association_regression_MRI_M1_RSIII_2.csv",sep='\t')
+cog<-read.csv("/Users/sahmad1/Downloads/SOURCE_FILES/inputfilessourcedata/Association_regression_Cognition_M1_RSIII_2.csv",sep='\t')
 
 ## Unique metabolites associated with cognition and the three MRI markers
 metabolites_cog<-cog$Metabolite[which(cog$p<0.05)]
@@ -52,8 +52,8 @@ library(jcolors)
 library(gridExtra)
 
 ## Load results from association analyses of general cognition and MRI measures
-mri<-read.csv("Association_Metabolon_fullmodel_excludingStroke_AD_RS1_5_m1.csv",sep='\t')
-cog<-read.csv("Gfactor_Association_metabolites_age_sex_antilipid_BMI_M1_annotated_95CI.csv",sep='\t')
+mri<-read.csv("/Users/sahmad1/Downloads/SOURCE_FILES/inputfilessourcedata/Association_regression_MRI_M1_RSIII_2.csv",sep='\t')
+cog<-read.csv("/Users/sahmad1/Downloads/SOURCE_FILES/inputfilessourcedata/Association_regression_Cognition_M1_RSIII_2.csv",sep='\t')
 
 ### Unique metabolites associated with cognition and the three MRI markers
 metabolites_cog<-cog$Metabolite[which(cog$p<0.05)]

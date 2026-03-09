@@ -63,8 +63,8 @@ res_anno<-anno_com%>%select("Metabolite","CHEMICAL_NAME","SUPER_PATHWAY","SUB_PA
 # forN<-merg2%>%select("metabo","Age_blood_collection","sex","Lipilower","BMI","education") %>% tidyr::drop_na() 
 # with education there are 898 samples and without education there are 896 samples 
 ########################################################################################################
-write.table(res_anno,file="Gfactor_Association_metabolites_age_sex_antilipid_BMI_M1_annotated.csv",sep="\t",row.names=F,col.names=T,quote=F)
-#write.table(res_anno,file="Gfactor_Association_metabolites_age_sex_antilipid_BMI_education_M2_annotated.csv",sep="\t",row.names=F,col.names=T,quote=F)
+write.table(res_anno,file="Association_regression_Cognition_M1_RSIII_2.csv",sep="\t",row.names=F,col.names=T,quote=F)
+#write.table(res_anno,file="Association_regression_Cognition_M2_RSIII_2.csv",sep="\t",row.names=F,col.names=T,quote=F)
 #########################################################################################################
 # Sex stratified association of metabolites with general cognition 
 ########################################################################################################
@@ -73,12 +73,12 @@ library(foreign)
 library(dplyr)
 library("readxl")
 ### General cognition information
-cognitionRS3<-read.spss("/home/sahmad/general_tasks/generalwork/some_test_analysis/costreamdata/data_analysis_jan06/e5_RS-I-5 RS-II-3 RS-III-2_cognition_complete 030217_analysis_file.sav",to.data.frame=T)
+cognitionRS3<-read.spss("e5_RS-I-5 RS-II-3 RS-III-2_cognition_complete 030217_analysis_file.sav",to.data.frame=T)
 cognitionRS3<-cognitionRS3[,c("ergoid","FAC1_1","LDST5","STR1T5_adjusted","STR2T5_adjusted","STR3T5_adjusted","WFT5","WLTimm5","WLTdel5","WLTrecog5","PPB_sum5")]
 ### Rotterdam Study covariate information
-covariates<-readRDS(file ="/home/sahmad/metabolomics/gut_liver_brain/quality_control_2021/association_v2_age_corrected/covariat_files/Study_RSI_IV_RSIII_2_covars.rds")
+covariates<-readRDS(file ="/Study_RSI_IV_RSIII_2_covars.rds")
 ### Metabolomics data file 
-load("/home/sahmad/metabolomics/gut_liver_brain/quality_control_2021/KNN_imputed_metabolon_data_3rdMarch.RData")
+load("KNN_imputed_metabolon_data_3rdMarch.RData")
 imputeddata<-as.data.frame(imputeddata)
 colnames(imputeddata)<-paste("metab",colnames(imputeddata),sep="_")
 imputeddata$ergoid<-rownames(imputeddata)
@@ -137,4 +137,5 @@ anno_com<-anno_com%>%as.data.frame(anno_com)%>%mutate(Metabolite = paste0("metab
 res_anno<-anno_com%>%select("Metabolite","CHEMICAL_NAME","SUPER_PATHWAY","SUB_PATHWAY")%>%left_join(results,.,by="Metabolite")
 
 ### write the association analysis for males and females separately 
-write.table(results,file="Gfactor_age_sex_BMI_lipid_low_female.csv",sep="\t",row.names=F,col.names=T,quote=F)
+write.table(results,file="Association_regression_Cognition_M1_RSIII_2_Sex_stratified_Female.csv",sep="\t",row.names=F,col.names=T,quote=F)
+#write.table(results,file="Association_regression_Cognition_M1_RSIII_2_Sex_stratified_male.csv",sep="\t",row.names=F,col.names=T,quote=F)

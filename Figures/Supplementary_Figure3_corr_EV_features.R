@@ -48,12 +48,55 @@ colnames(merg4) <- c(
 # pdf("Supplementary_Figure6_CorrelationEV_Features.pdf")
 # ggpairs(merg4, columns = 2:6)
 # dev.off()
+library(GGally)
+library(ggplot2)
+library(grid)
 
+# Custom function for Pearson correlation + p-value + n
+panel_cor_np <- function(data, mapping, digits = 3, ...) {
+  
+  x <- GGally::eval_data_col(data, mapping$x)
+  y <- GGally::eval_data_col(data, mapping$y)
+  
+  # Remove missing values pairwise
+  complete <- complete.cases(x, y)
+  x <- x[complete]
+  y <- y[complete]
+  
+  n <- length(x)
+  
+  test <- cor.test(x, y, method = "pearson")
+  
+  r <- round(test$estimate, digits)
+  p <- signif(test$p.value, digits)
+  
+  label <- paste0(
+    "r = ", r,
+    "\n",
+    "p = ", p,
+    "\n",
+    "n = ", n
+  )
+  
+  ggplot(data = data, mapping = mapping) +
+    annotate(
+      "text",
+      x = mean(range(x, na.rm = TRUE)),
+      y = mean(range(y, na.rm = TRUE)),
+      label = label,
+      size = 5,
+      color = "#1B1B1B"
+    ) +
+    theme_void()
+}
+
+# Save figure
 pdf("Supplementary_Figure6_CorrelationEV_Features.pdf", width = 8, height = 8)
 
 ggpairs(
   merg4,
   columns = 2:6,
+  
   lower = list(
     continuous = wrap(
       "points",
@@ -62,13 +105,11 @@ ggpairs(
       color = "#2C7FB8"
     )
   ),
+  
   upper = list(
-    continuous = wrap(
-      "cor",
-      size = 5,
-      color = "#1B1B1B"
-    )
+    continuous = panel_cor_np
   ),
+  
   diag = list(
     continuous = wrap(
       "densityDiag",
